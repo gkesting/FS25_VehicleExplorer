@@ -435,16 +435,19 @@ function VehicleStatus:getFieldNumber(realId)
 		local veh_pos_x, veh_pos_y, veh_pos_z = getWorldTranslation(veh.components[1].node)
 		
 		for fieldNum,fieldDef in ipairs(g_fieldManager.fields) do
-			for a=1, #fieldDef.getFieldStatusPartitions do
-				local b = fieldDef.getFieldStatusPartitions[a];
-				local x, z, wX, wZ, hX, hZ = b.x0, b.z0, b.widthX, b.widthZ, b.heightX, b.heightZ;
-				local distanceMax = math.max(wX, wZ, hX, hZ);
-				local distance = MathUtil.vector2Length(veh_pos_x - x, veh_pos_z - z);
-				if distance <= distanceMax then
-					--print("distance...".. tostring(distance).. " - maxDistance...".. tostring(distanceMax))
-					return fieldDef.fieldId;
-				end;				
-			end;			
+			--nil check
+			if fieldDef.getFieldStatusPartitions ~= nil and #fieldDef.getFieldStatusPartitions ~= 0 then
+				for a=1, #fieldDef.getFieldStatusPartitions do --nil error being thrown on this line
+					local b = fieldDef.getFieldStatusPartitions[a];
+					local x, z, wX, wZ, hX, hZ = b.x0, b.z0, b.widthX, b.widthZ, b.heightX, b.heightZ;
+					local distanceMax = math.max(wX, wZ, hX, hZ);
+					local distance = MathUtil.vector2Length(veh_pos_x - x, veh_pos_z - z);
+					if distance <= distanceMax then
+						--print("distance...".. tostring(distance).. " - maxDistance...".. tostring(distanceMax))
+						return fieldDef.fieldId;
+					end;				
+				end;
+			end;
 		end;
 
 	else
