@@ -436,7 +436,7 @@ function VehicleStatus:getFieldNumber(realId)
 		
 		for fieldNum,fieldDef in ipairs(g_fieldManager.fields) do
 			--nil check
-			if fieldDef.getFieldStatusPartitions ~= nil and #fieldDef.getFieldStatusPartitions ~= 0 then
+			if fieldDef.getFieldStatusPartitions then
 				for a=1, #fieldDef.getFieldStatusPartitions do --nil error being thrown on this line
 					local b = fieldDef.getFieldStatusPartitions[a];
 					local x, z, wX, wZ, hX, hZ = b.x0, b.z0, b.widthX, b.widthZ, b.heightX, b.heightZ;
@@ -447,7 +447,9 @@ function VehicleStatus:getFieldNumber(realId)
 						return fieldDef.fieldId;
 					end;				
 				end;
-			end;
+			else
+				return false;
+			end
 		end;
 
 	else
